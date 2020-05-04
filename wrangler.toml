@@ -1,0 +1,7 @@
+name = "cors-proxy-r34-app"
+type = "webpack"
+account_id = ""
+workers_dev = true
+route = ""
+zone_id = ""
+webpack_config = "webpack.config.js"
