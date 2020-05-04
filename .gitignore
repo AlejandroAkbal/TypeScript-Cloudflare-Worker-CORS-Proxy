@@ -106,3 +106,4 @@ dist
 # Wrangler
 transpiled
 worker
+wrangler.toml
