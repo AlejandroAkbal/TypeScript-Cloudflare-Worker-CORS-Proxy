@@ -2,10 +2,10 @@
   "name": "pname",
   "version": "1.0.0",
   "description": "Cloudflare worker TypeScript template",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
-    "dev:wrangler": "wrangler preview --watch",
+    "dev:wrangler:preview": "wrangler preview --watch --env development",
     "dev:webpack": "cross-env NODE_ENV=development webpack --mode development --watch",
     "delete:directories": "rimraf dist",
     "publish": "npm run build && wrangler publish --env production"

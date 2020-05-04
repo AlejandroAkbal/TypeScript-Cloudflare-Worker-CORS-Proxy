@@ -1,11 +1,17 @@
 name = "project-name"
 account_id = ""
-type = "webpack"
-webpack_config = "webpack.config.js"
 workers_dev = true
 
+type = "javascript"
+
+# type = "webpack"
+# webpack_config = "webpack.config.js"
+
+
 [env.production]
-# The ID of your domain you're deploying to
-zone_id = ""
-# The route pattern your Workers application will be served at
+zone_id = "project-name-production"
+route = "example.com/*"
+
+[env.development]
+name = "project-name-development"
 route = "example.com/*"
