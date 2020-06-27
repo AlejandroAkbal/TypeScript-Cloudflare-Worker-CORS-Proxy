@@ -4,10 +4,12 @@ A TypeScript Cloudflare Worker to proxy CORS requests
 
 ## Setup
 
-First, you will need wrangler
+First, you will need to install and set up wrangler
 
 ```sh
 npm install -g @cloudflare/wrangler
+
+wrangler config
 ```
 
 Then
