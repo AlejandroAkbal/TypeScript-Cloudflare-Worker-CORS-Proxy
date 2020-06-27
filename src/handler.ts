@@ -1,14 +1,15 @@
 import { configuration } from './configuration'
 
 export async function handleRequest(request: Request): Promise<Response> {
-  /*
-   * Create new request based on the initial request
-   */
-  const requestedURL = new URL(
-    new URL(request.url).searchParams.get('q') as string,
-  )
+  const URLQuery = new URL(request.url).searchParams.get('q')
 
   const newRequestInit: RequestInit = { ...request, cf: undefined }
+  if (!URLQuery) {
+    return new Response(null, {
+      status: 422,
+      statusText: 'You have to append a query: "?q=URL"',
+    })
+  }
 
   /*
    * Rewrite request to point to API url. This also makes the request mutable
