@@ -1,5 +1,5 @@
 export const configuration = {
   //   host: '*',
-  host: 'https://r34.app',
+  host: 'https://example.com',
   methods: 'GET, HEAD, POST, OPTIONS',
 }
