@@ -5,8 +5,6 @@ addEventListener('fetch', (event) => {
 
   switch (request.method) {
     // Handle requests
-    case 'GET':
-    case 'HEAD':
     case 'POST':
       const requestedURL = new URL(request.url).searchParams.get('q')
 
