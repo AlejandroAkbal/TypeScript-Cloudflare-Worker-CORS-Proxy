@@ -1,5 +1,5 @@
 name = "project-name"
-account_id = ""
+account_id = "YOUR_ACCOUNT_ID"
 workers_dev = true
 
 type = "javascript"
@@ -9,7 +9,8 @@ type = "javascript"
 
 
 [env.production]
-zone_id = "project-name-production"
+name = "project-name-production"
+zone_id = "YOUR_DOMAIN_ZONE"
 route = "example.com/*"
 
 [env.development]
