@@ -6,19 +6,6 @@ addEventListener('fetch', (event) => {
   switch (request.method) {
     // Handle requests
     case 'POST':
-      const requestedURL = new URL(request.url).searchParams.get('q')
-
-      if (!requestedURL) {
-        console.log(`No query, skipping: ${requestedURL}`)
-
-        return event.respondWith(
-          new Response(null, {
-            status: 422,
-            statusText: 'You have to append a query! "?q=URL"',
-          }),
-        )
-      }
-
       return event.respondWith(handleRequest(request))
 
     case 'OPTIONS':
