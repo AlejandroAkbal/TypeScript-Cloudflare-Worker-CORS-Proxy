@@ -6,8 +6,6 @@ addEventListener('fetch', (event) => {
   switch (request.method) {
     // Handle requests
     case 'GET':
-    case 'HEAD':
-    case 'POST':
       return event.respondWith(handleRequest(request))
 
     case 'OPTIONS':
