@@ -1,16 +1,28 @@
-# cors-proxy.r34.app
+# TypeScript Cloudflare Worker CORS Proxy
 
-CORS proxy used on the Rule 34 App
+A TypeScript Cloudflare Worker to proxy CORS requests
+
+## Setup
+
+First, you will need wrangler
+
+```sh
+npm install -g @cloudflare/wrangler
+```
+
+Then
+
+- Copy [wrangler.toml.example](wrangler.toml.example) into `wrangler.toml` and modify it with your user credentials
+- Modify [src/configuration.ts](src/configuration.ts)
 
 ## Developing
 
 To start developing
 
-- Modify `wrangler.toml` with your user credentials
 - Run `npm run dev:webpack`
 - and then `npm run dev:wrangler:preview`
 
-And you will have a preview ready
+And a preview will launch in your browser
 
 ## Publishing
 
