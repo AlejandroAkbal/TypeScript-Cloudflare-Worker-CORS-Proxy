@@ -1,30 +1,41 @@
 import { configuration } from './configuration'
 
+const gumroadVerificationEndpoint = new URL(
+  'https://api.gumroad.com/v2/licenses/verify',
+)
+
 export async function handleRequest(request: Request): Promise<Response> {
-  /*
-   * Create new request based on the initial request
-   */
-  const requestedURL = new URL(
-    new URL(request.url).searchParams.get('q') as string,
+  const requestURL = new URL(request.url)
+
+  const gumroadProduct = requestURL.searchParams.get('product')
+  const gumroadLicense = requestURL.searchParams.get('license')
+
+  if (!gumroadProduct || !gumroadLicense)
+    throw new Error('No product or license')
+
+  const newRequestInit: RequestInit = {
+    method: 'POST',
+
+    // Fake data
+    headers: {
+      Host: gumroadVerificationEndpoint.origin,
+      Referer: gumroadVerificationEndpoint.toString(),
+    },
+
+    body: JSON.stringify({
+      product_permalink: gumroadProduct,
+      license_key: gumroadLicense,
+    }),
+
+    cf: undefined,
+  }
+
+  const newRequest = new Request(
+    gumroadVerificationEndpoint.toString(),
+    newRequestInit,
   )
 
-  const newRequestInit: RequestInit = { ...request, cf: undefined }
-
-  /*
-   * Rewrite request to point to API url. This also makes the request mutable
-   * so we can add the correct Origin header to make the API server think
-   * that this request isn't cross-site.
-   */
-  const newRequest = new Request(requestedURL.toString(), newRequestInit)
-
-  /*
-   * Set headers to make the endpoint think it's itself
-   */
-  newRequest.headers.set('Host', requestedURL.origin)
-  newRequest.headers.set('Referer', requestedURL.toString())
-  // request.headers.set('Origin', requestedURL.toString())
-
-  console.log(`Fetching URL: ${newRequest.url}`)
+  console.log('Fetching URL', newRequest.headers)
 
   // Fetch it
   let response = await fetch(newRequest)
