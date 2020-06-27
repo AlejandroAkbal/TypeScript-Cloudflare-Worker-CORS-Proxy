@@ -3,7 +3,6 @@ import { configuration } from './configuration'
 export async function handleRequest(request: Request): Promise<Response> {
   const URLQuery = new URL(request.url).searchParams.get('q')
 
-  const newRequestInit: RequestInit = { ...request, cf: undefined }
   if (!URLQuery) {
     return new Response(null, {
       status: 422,
@@ -11,35 +10,55 @@ export async function handleRequest(request: Request): Promise<Response> {
     })
   }
 
-  /*
-   * Rewrite request to point to API url. This also makes the request mutable
-   * so we can add the correct Origin header to make the API server think
-   * that this request isn't cross-site.
-   */
-  const newRequest = new Request(requestedURL.toString(), newRequestInit)
+  const requestedURL = new URL(URLQuery)
 
   /*
    * Set headers to make the endpoint think it's itself
    */
-  newRequest.headers.set('Host', requestedURL.origin)
-  newRequest.headers.set('Referer', requestedURL.toString())
-  // request.headers.set('Origin', requestedURL.toString())
-
-  console.log(`Fetching URL: ${newRequest.url}`)
-
-  // Fetch it
-  let response = await fetch(newRequest)
+  const newRequestInitFakeHeaders: RequestInit = {
+    headers: {
+      Host: requestedURL.origin,
+      Referer: requestedURL.toString(),
+    },
+  }
 
   /*
-   * Rewrite response to reflect our own headers and make it mutable
+   * Set headers to make the endpoint think it's itself
    */
-  response = new Response(response.body, response)
 
-  response.headers.set('Access-Control-Allow-Origin', configuration.host)
-  response.headers.set('Vary', 'Origin')
+  const newRequestInit: RequestInit = {
+    ...request,
+    ...newRequestInitFakeHeaders,
+    cf: undefined,
+  }
 
-  // Return it
-  return response
+  const newRequest = new Request(requestedURL.toString(), newRequestInit)
+
+  console.log('Fetching: ', newRequest.url)
+
+  const fetchData = await fetch(newRequest)
+
+  /*
+   * Rewrite response to reflect our own headers
+   */
+  const newResponseRequestInitFakeHeaders: ResponseInit = {
+    headers: {
+      'Access-Control-Allow-Origin': configuration.host,
+      Vary: 'Origin',
+    },
+  }
+
+  const newResponseRequestInit: ResponseInit = {
+    ...fetchData,
+    ...newResponseRequestInitFakeHeaders,
+  }
+
+  const newResponseRequest = new Response(
+    fetchData.body,
+    newResponseRequestInit,
+  )
+
+  return newResponseRequest
 }
 
 export async function handleOptions(request: Request): Promise<Response> {
