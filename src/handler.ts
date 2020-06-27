@@ -23,7 +23,9 @@ export async function handleRequest(request: Request): Promise<Response> {
   }
 
   /*
-   * Set headers to make the endpoint think it's itself
+   * Notice: DONT try to console.log headers
+   * as for some reason they arent logged correctly,
+   * use https://postman-echo.com/ to check headers
    */
 
   const newRequestInit: RequestInit = {
