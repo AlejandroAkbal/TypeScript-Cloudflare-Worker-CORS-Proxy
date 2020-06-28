@@ -9,8 +9,11 @@ export async function handleRequest(request: Request): Promise<Response> {
 
   const { product_permalink, license_key } = requestBody
 
-    throw new Error('No product or license query')
   if (!product_permalink || !license_key)
+    return new Response(null, {
+      status: 400,
+      statusText: 'No product or license',
+    })
 
   const newRequestInit: RequestInit = {
     method: 'POST',
