@@ -24,12 +24,8 @@ export async function handleRequest(request: Request): Promise<Response> {
   /*
    * Set headers to make the endpoint think it's itself
    */
-  const newRequestInitFakeHeaders: RequestInit = {
-    headers: {
-      Host: requestedURL.origin,
-      Referer: requestedURL.toString(),
-    },
-  }
+  newRequest.headers.set('Host', requestedURL.origin)
+  newRequest.headers.set('Referrer', requestedURL.toString())
 
   /*
    * Notice: DONT try to console.log headers
@@ -41,27 +37,15 @@ export async function handleRequest(request: Request): Promise<Response> {
 
   const fetchData = await fetch(newRequest)
 
+  const newResponse = new Response(fetchData.body, fetchData)
+
   /*
    * Rewrite response to reflect our own headers
    */
-  const newResponseRequestInitFakeHeaders: ResponseInit = {
-    headers: {
-      'Access-Control-Allow-Origin': configuration.host,
-      Vary: 'Origin',
-    },
-  }
+  newResponse.headers.set('Access-Control-Allow-Origin', configuration.host)
+  newResponse.headers.set('Vary', 'Origin')
 
-  const newResponseRequestInit: ResponseInit = {
-    ...fetchData,
-    ...newResponseRequestInitFakeHeaders,
-  }
-
-  const newResponseRequest = new Response(
-    fetchData.body,
-    newResponseRequestInit,
-  )
-
-  return newResponseRequest
+  return newResponse
 }
 
 export async function handleOptions(request: Request): Promise<Response> {
