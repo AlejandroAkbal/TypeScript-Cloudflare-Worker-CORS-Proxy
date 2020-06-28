@@ -12,6 +12,15 @@ export async function handleRequest(request: Request): Promise<Response> {
 
   const requestedURL = new URL(URLQuery)
 
+  const newRequestInit: RequestInit = {
+    ...request,
+
+    // Cloudflare settings
+    cf: { cacheEverything: true },
+  }
+
+  const newRequest = new Request(requestedURL.toString(), newRequestInit)
+
   /*
    * Set headers to make the endpoint think it's itself
    */
@@ -27,14 +36,6 @@ export async function handleRequest(request: Request): Promise<Response> {
    * as for some reason they arent logged correctly,
    * use https://postman-echo.com/ to check headers
    */
-
-  const newRequestInit: RequestInit = {
-    ...request,
-    ...newRequestInitFakeHeaders,
-    cf: undefined,
-  }
-
-  const newRequest = new Request(requestedURL.toString(), newRequestInit)
 
   console.log('Fetching: ', newRequest.url)
 
