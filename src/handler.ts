@@ -5,13 +5,12 @@ const gumroadVerificationEndpoint = new URL(
 )
 
 export async function handleRequest(request: Request): Promise<Response> {
-  const requestURL = new URL(request.url)
+  const requestBody = JSON.parse(await request.json())
 
-  const gumroadProduct = requestURL.searchParams.get('product')
-  const gumroadLicense = requestURL.searchParams.get('license')
+  const { product_permalink, license_key } = requestBody
 
-  if (!gumroadProduct || !gumroadLicense)
     throw new Error('No product or license query')
+  if (!product_permalink || !license_key)
 
   const newRequestInit: RequestInit = {
     method: 'POST',
@@ -20,7 +19,7 @@ export async function handleRequest(request: Request): Promise<Response> {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
 
-    body: `product_permalink=${gumroadProduct}&license_key=${gumroadLicense}`,
+    body: `product_permalink=${product_permalink}&license_key=${license_key}`,
 
     cf: undefined,
   }
