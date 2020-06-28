@@ -25,7 +25,7 @@ export async function handleRequest(request: Request): Promise<Response> {
    * Set headers to make the endpoint think it's itself
    */
   newRequest.headers.set('Host', requestedURL.origin)
-  newRequest.headers.set('Referrer', requestedURL.toString())
+  newRequest.headers.set('Referer', requestedURL.toString()) // It is supposed to be "Referrer", but doesnt work with some websites
 
   /*
    * Notice: DONT try to console.log headers
