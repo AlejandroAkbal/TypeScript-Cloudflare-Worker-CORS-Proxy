@@ -34,19 +34,17 @@ export async function handleRequest(request: Request): Promise<Response> {
 
   console.log('Fetching: ', newRequest.url)
 
-  // Fetch it
-  let response = await fetch(newRequest)
+  const fetchData = await fetch(newRequest)
+
+  const newResponse = new Response(fetchData.body, fetchData)
 
   /*
-   * Rewrite response to reflect our own headers and make it mutable
+   * Rewrite response to reflect our own headers
    */
-  response = new Response(response.body, response)
+  newResponse.headers.set('Access-Control-Allow-Origin', configuration.host)
+  newResponse.headers.set('Vary', 'Origin')
 
-  response.headers.set('Access-Control-Allow-Origin', configuration.host)
-  response.headers.set('Vary', 'Origin')
-
-  // Return it
-  return response
+  return newResponse
 }
 
 export async function handleOptions(request: Request): Promise<Response> {
@@ -62,7 +60,7 @@ export async function handleOptions(request: Request): Promise<Response> {
     return new Response(null, {
       headers: {
         'Access-Control-Allow-Origin': configuration.host,
-        'Access-Control-Allow-Methods': configuration.methods,
+        'Access-Control-Allow-Methods': configuration.methods.join(', '),
         'Access-Control-Allow-Headers': 'Content-Type',
       },
     })
@@ -74,7 +72,7 @@ export async function handleOptions(request: Request): Promise<Response> {
   } else {
     return new Response(null, {
       headers: {
-        Allow: configuration.methods,
+        Allow: configuration.methods.join(', '),
       },
     })
   }

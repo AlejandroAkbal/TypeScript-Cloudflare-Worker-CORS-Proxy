@@ -1,24 +1,24 @@
+import { configuration } from './configuration'
 import { handleRequest, handleOptions } from './handler'
 
 addEventListener('fetch', (event) => {
   const { request } = event
 
-  switch (request.method) {
-    // Handle requests
-    case 'POST':
-      return event.respondWith(handleRequest(request))
+  const isMethodAllowed = configuration.methods.includes(request.method)
 
+  if (!isMethodAllowed)
+    return event.respondWith(
+      new Response(null, {
+        status: 405,
+        statusText: 'Method Not Allowed',
+      }),
+    )
+
+  switch (request.method) {
     case 'OPTIONS':
       return event.respondWith(handleOptions(request))
 
-    // If no good option then return error
     default:
-      return event.respondWith(
-        new Response(null, {
-          status: 405,
-
-          statusText: 'Method Not Allowed',
-        }),
-      )
+      return event.respondWith(handleRequest(request))
   }
 })

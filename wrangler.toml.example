@@ -1,5 +1,5 @@
 name = "auth-r34-app"
-account_id = ""
+account_id = "YOUR_ACCOUNT_ID"
 workers_dev = true
 
 type = "javascript"
@@ -10,6 +10,7 @@ type = "javascript"
 
 [env.production]
 zone_id = "auth-r34-app-production"
+zone_id = "YOUR_DOMAIN_ZONE"
 route = "auth.r34.app/*"
 
 [env.development]
