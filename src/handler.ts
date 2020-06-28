@@ -61,7 +61,7 @@ export async function handleOptions(request: Request): Promise<Response> {
     return new Response(null, {
       headers: {
         'Access-Control-Allow-Origin': configuration.host,
-        'Access-Control-Allow-Methods': configuration.methods,
+        'Access-Control-Allow-Methods': configuration.methods.join(', '),
         'Access-Control-Allow-Headers': 'Content-Type',
       },
     })
@@ -73,7 +73,7 @@ export async function handleOptions(request: Request): Promise<Response> {
   } else {
     return new Response(null, {
       headers: {
-        Allow: configuration.methods,
+        Allow: configuration.methods.join(', '),
       },
     })
   }
