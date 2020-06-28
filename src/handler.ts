@@ -11,21 +11,16 @@ export async function handleRequest(request: Request): Promise<Response> {
   const gumroadLicense = requestURL.searchParams.get('license')
 
   if (!gumroadProduct || !gumroadLicense)
-    throw new Error('No product or license')
+    throw new Error('No product or license query')
 
   const newRequestInit: RequestInit = {
     method: 'POST',
 
-    // Fake data
     headers: {
-      Host: gumroadVerificationEndpoint.origin,
-      Referer: gumroadVerificationEndpoint.toString(),
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
 
-    body: JSON.stringify({
-      product_permalink: gumroadProduct,
-      license_key: gumroadLicense,
-    }),
+    body: `product_permalink=${gumroadProduct}&license_key=${gumroadLicense}`,
 
     cf: undefined,
   }
@@ -35,7 +30,7 @@ export async function handleRequest(request: Request): Promise<Response> {
     newRequestInit,
   )
 
-  console.log('Fetching URL', newRequest.headers)
+  console.log('Fetching: ', newRequest.url)
 
   // Fetch it
   let response = await fetch(newRequest)
