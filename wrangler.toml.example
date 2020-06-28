@@ -1,5 +1,5 @@
-name = "cors-proxy-r34-app"
-account_id = ""
+name = "cors-proxy-r34-ap"
+account_id = "YOUR_ACCOUNT_ID"
 workers_dev = true
 
 type = "javascript"
@@ -9,8 +9,9 @@ type = "javascript"
 
 
 [env.production]
-zone_id = "cors-proxy-r34-app-production"
-route = "cors-proxy.r34.app/*"
+name = "cors-proxy-r34-app-production"
+zone_id = "YOUR_DOMAIN_ZONE"
+route = "example.com/*"
 
 [env.development]
 name = "cors-proxy-r34-app-development"
