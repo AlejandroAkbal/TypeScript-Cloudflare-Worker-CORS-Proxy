@@ -5,7 +5,16 @@ const gumroadVerificationEndpoint = new URL(
 )
 
 export async function handleRequest(request: Request): Promise<Response> {
-  const requestBody = JSON.parse(await request.json())
+  let requestBody
+
+  try {
+    requestBody = JSON.parse(await request.json())
+  } catch {
+    return new Response(null, {
+      status: 400,
+      statusText: 'Invalid body',
+    })
+  }
 
   const { product_permalink, license_key } = requestBody
 
