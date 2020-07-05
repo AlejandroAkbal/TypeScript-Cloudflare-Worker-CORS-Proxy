@@ -8,7 +8,7 @@ export async function handleRequest(request: Request): Promise<Response> {
   let requestBody
 
   try {
-    requestBody = JSON.parse(await request.json())
+    requestBody = JSON.parse(await request.text())
   } catch {
     return new Response(null, {
       status: 400,
